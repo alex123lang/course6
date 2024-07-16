@@ -8,7 +8,7 @@ def get_articles_from_cache():
     if not CACHE_ENABLED:
         return BlogArticle.objects.all()
     else:
-        key = 'categories_list'
+        key = "categories_list"
         articles = cache.get(key)
         if articles is not None:
             return articles

@@ -9,7 +9,7 @@ from mailing.models import Mailing, Log
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        mailings = Mailing.objects.filter(status='Запущена')
+        mailings = Mailing.objects.filter(status="Запущена")
 
         for mailing in mailings:
             clients = mailing.clients.all()
@@ -21,10 +21,14 @@ class Command(BaseCommand):
                     recipient_list=[client.email for client in clients],
                     fail_silently=False,
                 )
-                Log.objects.create(status=Log.SUCCESS,
-                                   server_response=server_response,
-                                   mailing=mailing, )
+                Log.objects.create(
+                    status=Log.SUCCESS,
+                    server_response=server_response,
+                    mailing=mailing,
+                )
             except smtplib.SMTPException as e:
-                Log.objects.create(status=Log.FAIL,
-                                   server_response=str(e),
-                                   mailing=mailing, )
+                Log.objects.create(
+                    status=Log.FAIL,
+                    server_response=str(e),
+                    mailing=mailing,
+                )

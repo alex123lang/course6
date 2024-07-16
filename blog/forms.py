@@ -8,10 +8,10 @@ class StyleFormMixin:
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             if not isinstance(field.widget, forms.CheckboxInput):
-                field.widget.attrs['class'] = 'form-control'
+                field.widget.attrs["class"] = "form-control"
 
 
 class BlogArticleForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = BlogArticle
-        fields = '__all__'
+        fields = "__all__"

@@ -36,13 +36,17 @@ def send_mailing():
                     recipient_list=[client.email for client in clients],
                     fail_silently=False,
                 )
-                Log.objects.create(status=Log.SUCCESS,
-                                   server_response=server_response,
-                                   mailing=mailing, )
+                Log.objects.create(
+                    status=Log.SUCCESS,
+                    server_response=server_response,
+                    mailing=mailing,
+                )
             except smtplib.SMTPException as e:
-                Log.objects.create(status=Log.FAIL,
-                                   server_response=str(e),
-                                   mailing=mailing, )
+                Log.objects.create(
+                    status=Log.FAIL,
+                    server_response=str(e),
+                    mailing=mailing,
+                )
 
             # Обновление времени следующей отправки
             if mailing.periodicity == Mailing.DAILY:
@@ -60,7 +64,7 @@ def start_scheduler():
 
     # Проверка, добавлена ли задача уже
     if not scheduler.get_jobs():
-        scheduler.add_job(send_mailing, 'interval', seconds=30)
+        scheduler.add_job(send_mailing, "interval", seconds=30)
 
     if not scheduler.running:
         scheduler.start()
@@ -70,7 +74,7 @@ def get_messages_from_cache():
     if not CACHE_ENABLED:
         return Message.objects.all()
     else:
-        key = 'categories_list'
+        key = "categories_list"
         messages = cache.get(key)
         if messages is not None:
             return messages
